@@ -7,25 +7,26 @@
     LunchCheckController.$inject = ['$scope'];
 
     function LunchCheckController($scope) {
-        $scope.dishes = '';
-        $scope.message = '';
-        $scope.checked = false;
 
+        // Method to check the number of lunch items
         $scope.checkLunch = function() {
-            if ($scope.dishes.trim().length === 0) {
-                $scope.empty = true;
+            // Trim any leading/trailing spaces from the input
+            var items = $scope.lunchItems ? $scope.lunchItems.trim() : "";
+
+            // Check if the input is empty
+            if (items === "") {
+                $scope.message = "Please enter data first";
             } else {
-                $scope.checked = true;
-                $scope.empty = false;
-                var arrayDishes = $scope.dishes.split(',');
-                var arrayDishesWithoutEmptys = arrayDishes.filter(function(v) {
-                    return v.trim() !== '';
+                // Split the input string by commas and filter out empty items (if any)
+                var itemsArray = items.split(',').filter(function(item) {
+                    return item.trim() !== ""; // Exclude empty items
                 });
 
-                if (arrayDishesWithoutEmptys.length <= 3) {
-                    $scope.message = 'Enjoy!';
+                // Display message based on the number of items
+                if (itemsArray.length <= 3) {
+                    $scope.message = "Enjoy!";
                 } else {
-                    $scope.message = 'Too much!';
+                    $scope.message = "Too much!";
                 }
             }
         };
