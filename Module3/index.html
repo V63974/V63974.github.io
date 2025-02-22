@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu Search</title>
+    <title>Narrow Down Your Menu Choice</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="app.js" defer></script>
@@ -11,6 +11,7 @@
 <body ng-controller="MenuController">
 
     <div class="search-container">
+        <h1>Narrow Down Your Menu Choice</h1>
         <!-- Search Box and Button -->
         <input type="text" ng-model="searchTerm" placeholder="Enter search term..." />
         <button ng-click="searchMenuItems()">Narrow It Down For Me!</button>
