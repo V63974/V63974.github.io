@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="menuApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Search</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="app.js" defer></script>
+</head>
+<body ng-controller="MenuController">
+
+    <div class="search-container">
+        <!-- Search Box and Button -->
+        <input type="text" ng-model="searchTerm" placeholder="Enter search term..." />
+        <button ng-click="searchMenuItems()">Narrow It Down For Me!</button>
+    </div>
+
+    <!-- Display Search Results -->
+
+    <ul class="menu-items">
+        <li ng-repeat="item in foundItems">
+            <div class="item-info">
+                <strong>{{ item.name }}</strong>, {{ item.short_name }}, {{ item.description }}
+            </div>
+            <button class="remove-btn" ng-click="removeItem($index)">Don't want this one!</button>
+        </li>
+    </ul>
+
+</body>
+</html>

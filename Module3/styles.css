@@ -1,0 +1,52 @@
+/* Basic styling for layout and appearance */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+.search-container {
+    margin-bottom: 20px;
+}
+
+input {
+    padding: 8px;
+    font-size: 16px;
+    width: 300px;
+}
+
+button {
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.menu-items {
+    list-style-type: none;
+    padding: 0;
+}
+
+.menu-items li {
+    margin-bottom: 20px;
+}
+
+.item-info {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.remove-btn {
+    background-color: red;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    cursor: pointer;
+}
+
+.remove-btn:hover {
+    background-color: darkred;
+}
+
+.no-results {
+    color: red;
+    font-size: 18px;
+}
