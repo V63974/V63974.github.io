@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="RestaurantApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Sign-Up</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { max-width: 500px; margin: 20px auto; }
+        .hidden { display: none; }
+        .text-danger { color: red; }
+        .text-success { color: green; }
+    </style>
+</head>
+<body ng-controller="MainController as mainCtrl">
+
+    <nav>
+        <button ng-click="mainCtrl.showPage('signup')">Sign Up</button>
+        <button ng-click="mainCtrl.showPage('myinfo')">My Info</button>
+    </nav>
+
+    <div class="container">
+
+        <!-- Sign Up Form -->
+        <div ng-show="mainCtrl.currentPage === 'signup'">
+            <h2>Sign Up for Our Newsletter</h2>
+            <form name="signupForm" ng-submit="mainCtrl.submit()" novalidate>
+                
+                <label>First Name:</label>
+                <input type="text" ng-model="mainCtrl.user.firstName" required>
+                <span class="text-danger" ng-show="signupForm.firstName.$error.required">Required</span>
+
+                <label>Last Name:</label>
+                <input type="text" ng-model="mainCtrl.user.lastName" required>
+                <span class="text-danger" ng-show="signupForm.lastName.$error.required">Required</span>
+
+                <label>Email:</label>
+                <input type="email" ng-model="mainCtrl.user.email" required>
+                <span class="text-danger" ng-show="signupForm.email.$error.required">Required</span>
+                <span class="text-danger" ng-show="signupForm.email.$error.email">Invalid Email</span>
+
+                <label>Phone:</label>
+                <input type="text" ng-model="mainCtrl.user.phone" required>
+                <span class="text-danger" ng-show="signupForm.phone.$error.required">Required</span>
+
+                <label>Favorite Menu Item (e.g., L1):</label>
+                <input type="text" ng-model="mainCtrl.user.favorite" required>
+                <span class="text-danger" ng-show="mainCtrl.invalidMenu">No such menu item exists.</span>
+
+                <button type="submit" ng-disabled="signupForm.$invalid">Submit</button>
+                <p class="text-success" ng-show="mainCtrl.saved">Your information has been saved.</p>
+            </form>
+        </div>
+
+        <!-- My Info Page -->
+        <div ng-show="mainCtrl.currentPage === 'myinfo'">
+            <h2>My Info</h2>
+            <div ng-if="mainCtrl.userData">
+                <p><strong>Name:</strong> {{ mainCtrl.userData.firstName }} {{ mainCtrl.userData.lastName }}</p>
+                <p><strong>Email:</strong> {{ mainCtrl.userData.email }}</p>
+                <p><strong>Phone:</strong> {{ mainCtrl.userData.phone }}</p>
+                <p><strong>Favorite Dish:</strong> {{ mainCtrl.userData.favorite }}</p>
+                
+                <div ng-if="mainCtrl.userData.favoriteItem">
+                    <h4>{{ mainCtrl.userData.favoriteItem.name }}</h4>
+                    <img ng-src="{{ mainCtrl.userData.favoriteItem.image }}" width="200">
+                    <p>{{ mainCtrl.userData.favoriteItem.description }}</p>
+                </div>
+            </div>
+
+            <div ng-if="!mainCtrl.userData">
+                <p>Not Signed Up Yet. <a href="#" ng-click="mainCtrl.showPage('signup')">Sign Up Now!</a></p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        angular.module('RestaurantApp', [])
+        .controller('MainController', ['$http', function($http) {
+            var vm = this;
+            vm.currentPage = 'signup'; // Default page
+            vm.user = {};
+            vm.userData = null;
+            vm.invalidMenu = false;
+            vm.saved = false;
+
+            vm.showPage = function(page) {
+                vm.currentPage = page;
+            };
+
+            vm.submit = function() {
+                var categoryShortName = vm.user.favorite.charAt(0); // First letter = category
+                var menuNumber = vm.user.favorite.slice(1); // Rest = item number
+
+                var menuUrl = "https://coursera-jhu-default-rtdb.firebaseio.com/menu_items/" + categoryShortName + "/menu_items/" + menuNumber + ".json";
+
+                $http.get(menuUrl).then(function(response) {
+                    if (response.data === null) {
+                        vm.invalidMenu = true;
+                    } else {
+                        vm.invalidMenu = false;
+                        vm.userData = {
+                            firstName: vm.user.firstName,
+                            lastName: vm.user.lastName,
+                            email: vm.user.email,
+                            phone: vm.user.phone,
+                            favorite: vm.user.favorite,
+                            favoriteItem: response.data
+                        };
+                        vm.saved = true;
+                    }
+                }).catch(function() {
+                    vm.invalidMenu = true;
+                });
+            };
+        }]);
+    </script>
+
+</body>
+</html>
