@@ -94,6 +94,24 @@ form button {
     color: white;
     border: none;
 }
+#view-result {
+    padding: 1rem;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    margin-top: 1rem;
+    line-height: 1.6;
+    border: 1px solid #ccc;
+}
+#cancel-message {
+    padding: 1rem;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    margin-top: 1rem;
+    line-height: 1.6;
+    border: 1px solid #ccc;
+}
+
+
 
 footer {
     text-align: center;
@@ -101,3 +119,9 @@ footer {
     background: #222;
     color: white;
 }
+@media (max-width: 768px) {
+    .hospital-card {
+        width: 100%;
+    }
+}
+
